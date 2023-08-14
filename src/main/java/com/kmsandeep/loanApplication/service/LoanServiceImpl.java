@@ -1,14 +1,17 @@
 package com.kmsandeep.loanApplication.service;
 
 import com.kmsandeep.loanApplication.constant.LoanStatus;
-import com.kmsandeep.loanApplication.dao.LoanRepository;
+import com.kmsandeep.loanApplication.repository.LoanRepository;
 import com.kmsandeep.loanApplication.dto.Loan;
 import com.kmsandeep.loanApplication.dto.request.LoanRequest;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
-
+@Transactional
+@Service
 public class LoanServiceImpl implements LoanService{
     @Autowired
     LoanRepository loanRepository;
@@ -21,9 +24,8 @@ public class LoanServiceImpl implements LoanService{
     }
 
     @Override
-    public Loan findLoan(String applicationId) {
-        Optional<Loan> loanOptional = loanRepository.findById(applicationId);
-        return loanOptional.get();
+    public Optional<Loan> findLoan(String applicationId) {
+        return loanRepository.findById(applicationId);
     }
 
     @Override
@@ -34,5 +36,10 @@ public class LoanServiceImpl implements LoanService{
     @Override
     public Loan updateLoan(Loan loan) {
         return loanRepository.save(loan);
+    }
+
+    @Override
+    public List<Loan> findByApplicantName(String name) {
+        return loanRepository.findByApplicantName(name);
     }
 }
