@@ -1,5 +1,7 @@
 package com.kmsandeep.loanApplication.service;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.kmsandeep.loanApplication.model.Address;
 import com.kmsandeep.loanApplication.model.Applicant;
 import com.kmsandeep.loanApplication.model.Loan;
@@ -9,16 +11,12 @@ import java.util.UUID;
 
 public class LoanServiceUtils {
     public static Loan mapRequestToLoan(LoanRequest loanRequest){
-        Loan loan = new Loan();
-        Applicant applicant = new Applicant();
-        applicant.setName(loanRequest.getApplicantName());
-        Address address = new Address();
-        address.setState("UP");
-        applicant.setAddress(address);
-        loan.setApplicant(applicant);
-        loan.setTermInMonths(loanRequest.getTermInMonths());
-        loan.setLoanAmount(loanRequest.getLoanAmount());
-        loan.setInterestRate(loanRequest.getInterestRate());
-        return loan;
+        ObjectMapper objectMapper = new ObjectMapper();
+        try {
+            Loan loan = objectMapper.readValue(objectMapper.writeValueAsString(loanRequest), Loan.class);
+            return loan;
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

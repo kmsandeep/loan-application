@@ -1,5 +1,6 @@
 package com.kmsandeep.loanApplication.model.response;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.kmsandeep.loanApplication.model.Loan;
 import lombok.AllArgsConstructor;
@@ -14,9 +15,9 @@ import java.util.Map;
 @AllArgsConstructor
 @Builder
 public class LoanResponse {
-    @JsonProperty
+//    @JsonInclude(JsonInclude.Include.NON_NULL)
     private Map<String,String> errorMap;
-    @JsonProperty
+//    @JsonInclude(JsonInclude.Include.NON_NULL)
     private List<Loan> result;
     public LoanResponse(){
         errorMap = new HashMap<>();

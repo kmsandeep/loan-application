@@ -1,6 +1,8 @@
 package com.kmsandeep.loanApplication.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -14,9 +16,8 @@ public class Address {
     @Column(name = "id", nullable = false)
     private Long id;
     private String state;
-    private String city;
     private String pinCode;
-    @JsonIgnore
+    @JsonBackReference
     @OneToOne(mappedBy = "address",fetch = FetchType.LAZY)
     private Applicant applicant;
 }

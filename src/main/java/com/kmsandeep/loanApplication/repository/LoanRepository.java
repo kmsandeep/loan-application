@@ -14,4 +14,5 @@ import java.util.List;
 public interface LoanRepository extends JpaRepository<Loan,String> {
 
 
+
 }
