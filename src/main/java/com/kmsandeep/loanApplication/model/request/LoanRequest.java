@@ -1,4 +1,4 @@
-package com.kmsandeep.loanApplication.dto.request;
+package com.kmsandeep.loanApplication.model.request;
 
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;

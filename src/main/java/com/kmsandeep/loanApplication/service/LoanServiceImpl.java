@@ -2,8 +2,8 @@ package com.kmsandeep.loanApplication.service;
 
 import com.kmsandeep.loanApplication.constant.LoanStatus;
 import com.kmsandeep.loanApplication.repository.LoanRepository;
-import com.kmsandeep.loanApplication.dto.Loan;
-import com.kmsandeep.loanApplication.dto.request.LoanRequest;
+import com.kmsandeep.loanApplication.model.Loan;
+import com.kmsandeep.loanApplication.model.request.LoanRequest;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -38,8 +38,8 @@ public class LoanServiceImpl implements LoanService{
         return loanRepository.save(loan);
     }
 
-    @Override
-    public List<Loan> findByApplicantName(String name) {
-        return loanRepository.findByApplicantName(name);
-    }
+//    @Override
+//    public List<Loan> findByApplicantName(String name) {
+//        return loanRepository.findByApplicantName(name);
+//    }
 }

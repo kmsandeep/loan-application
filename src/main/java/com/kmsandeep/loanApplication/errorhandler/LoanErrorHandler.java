@@ -1,6 +1,6 @@
 package com.kmsandeep.loanApplication.errorhandler;
 
-import com.kmsandeep.loanApplication.dto.response.LoanResponse;
+import com.kmsandeep.loanApplication.model.response.LoanResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;

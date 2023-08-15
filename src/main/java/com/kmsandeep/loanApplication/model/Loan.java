@@ -1,10 +1,7 @@
-package com.kmsandeep.loanApplication.dto;
+package com.kmsandeep.loanApplication.model;
 
 import com.kmsandeep.loanApplication.constant.LoanStatus;
-import com.kmsandeep.loanApplication.dto.request.LoanRequest;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -17,13 +14,17 @@ import java.math.BigDecimal;
 @AllArgsConstructor
 public class Loan {
     @Id
-    private String applicationId;
-    private String applicantName;
+    @GeneratedValue(strategy = GenerationType.UUID)
+    @Column(name = "ID")
+    private String id;
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "applicant_id",referencedColumnName = "id")
+    private Applicant applicant;
     private BigDecimal loanAmount;
     private BigDecimal loanApprovedAmount;
-
     private int termInMonths;
     private float interestRate;
+    @Enumerated(EnumType.STRING)
     private LoanStatus status;
 
 }

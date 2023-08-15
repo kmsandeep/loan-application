@@ -1,4 +1,4 @@
-package com.kmsandeep.loanApplication.dto.request;
+package com.kmsandeep.loanApplication.model.request;
 
 import com.kmsandeep.loanApplication.constant.LoanStatus;
 

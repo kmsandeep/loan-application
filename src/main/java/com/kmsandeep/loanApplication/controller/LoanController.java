@@ -1,10 +1,10 @@
 package com.kmsandeep.loanApplication.controller;
 
 import com.kmsandeep.loanApplication.constant.LoanStatus;
-import com.kmsandeep.loanApplication.dto.Loan;
-import com.kmsandeep.loanApplication.dto.request.LoanRequest;
-import com.kmsandeep.loanApplication.dto.request.LoanStatusUpdate;
-import com.kmsandeep.loanApplication.dto.response.LoanResponse;
+import com.kmsandeep.loanApplication.model.Loan;
+import com.kmsandeep.loanApplication.model.request.LoanRequest;
+import com.kmsandeep.loanApplication.model.request.LoanStatusUpdate;
+import com.kmsandeep.loanApplication.model.response.LoanResponse;
 import com.kmsandeep.loanApplication.errorhandler.LoanNotFoundException;
 import com.kmsandeep.loanApplication.service.LoanService;
 import jakarta.validation.Valid;
@@ -17,7 +17,6 @@ import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -57,21 +56,21 @@ public class LoanController {
                 .body(LoanResponse.multi(allLoans));
     }
 
-    @GetMapping
-    public ResponseEntity<LoanResponse> listApplicantLoans(@RequestParam("applicantName") String name){
-        List<Loan> allLoans = loanService.findByApplicantName(name);
-        if(CollectionUtils.isEmpty(allLoans)){
-            throw new LoanNotFoundException();
-        }
-        return ResponseEntity.status(HttpStatus.FOUND)
-                .body(LoanResponse.multi(allLoans));
-    }
+//    @GetMapping
+//    public ResponseEntity<LoanResponse> listApplicantLoans(@RequestParam("applicantName") String name){
+//        List<Loan> allLoans = loanService.findByApplicantName(name);
+//        if(CollectionUtils.isEmpty(allLoans)){
+//            throw new LoanNotFoundException();
+//        }
+//        return ResponseEntity.status(HttpStatus.FOUND)
+//                .body(LoanResponse.multi(allLoans));
+//    }
 
     @PatchMapping("/{applicationId}/status")
     public ResponseEntity<LoanResponse> updateLoanStatus(@PathVariable String applicationId, @RequestBody LoanStatusUpdate statusUpdate) {
-        Optional<Loan> optionalApplication = loanService.findLoan(applicationId);
-        if (optionalApplication.isPresent()) {
-            Loan application = optionalApplication.get();
+        Optional<Loan> loanOptional = loanService.findLoan(applicationId);
+        if (loanOptional.isPresent()) {
+            Loan application = loanOptional.get();
             application.setStatus(statusUpdate.getLoanStatus());
             if (LoanStatus.APPROVED.equals(statusUpdate.getLoanStatus())) {
                 application.setLoanApprovedAmount(statusUpdate.getLoanApprovedAmount());

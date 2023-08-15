@@ -1,7 +1,7 @@
-package com.kmsandeep.loanApplication.dto.response;
+package com.kmsandeep.loanApplication.model.response;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.kmsandeep.loanApplication.dto.Loan;
+import com.kmsandeep.loanApplication.model.Loan;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
