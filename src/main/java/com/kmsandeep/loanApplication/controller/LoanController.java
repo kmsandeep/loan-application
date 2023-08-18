@@ -13,6 +13,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.*;
 
@@ -27,13 +28,20 @@ public class LoanController {
     private static final Logger LOGGER = LoggerFactory.getLogger(LoanController.class);
     @Autowired
     private LoanService loanService;
+    @Autowired
+    private KafkaTemplate<String, String> kafkaTemplate;
+
     @PostMapping
     public ResponseEntity<LoanResponse> submitLoan(@RequestBody @Valid LoanRequest request) {
-        LOGGER.debug("inside submitLoan request: {}",request.toString());
-            Loan application = loanService.submitLoan(request);
-            loans.add(application);
-            return ResponseEntity.status(HttpStatus.CREATED)
-                    .body(LoanResponse.one(application));
+        Loan application = loanService.submitLoan(request);
+        loans.add(application);
+        StringBuilder sb = new StringBuilder();
+        kafkaTemplate.send("loan", application.toString())
+                .whenComplete((res, err) -> {
+                    LOGGER.info("kafka message sent success: "+ application.getId());
+                });
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(LoanResponse.one(application));
     }
 
     @GetMapping("/{applicationId}")
@@ -49,8 +57,8 @@ public class LoanController {
     @GetMapping("/findAll")
     public ResponseEntity<LoanResponse> listLoans() {
         List<Loan> allLoans = loanService.findAllLoans();
-        if(CollectionUtils.isEmpty(allLoans)){
-           throw new LoanNotFoundException();
+        if (CollectionUtils.isEmpty(allLoans)) {
+            throw new LoanNotFoundException();
         }
         return ResponseEntity.status(HttpStatus.FOUND)
                 .body(LoanResponse.multi(allLoans));

@@ -15,9 +15,7 @@ import java.util.Map;
 @AllArgsConstructor
 @Builder
 public class LoanResponse {
-//    @JsonInclude(JsonInclude.Include.NON_NULL)
     private Map<String,String> errorMap;
-//    @JsonInclude(JsonInclude.Include.NON_NULL)
     private List<Loan> result;
     public LoanResponse(){
         errorMap = new HashMap<>();

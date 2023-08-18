@@ -6,6 +6,8 @@ spring:
     driver-class-name: org.h2.Driver
     user: sa
     password:
+  kafka:
+    bootstrap-servers: localhost:9092
 
   h2:
     console:

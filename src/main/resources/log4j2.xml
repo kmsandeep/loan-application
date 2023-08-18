@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <Configuration>
     <Properties>
-        <Property name="LOG_ROOT_PATH">C:\Users\sandeepmaurya\dev\projects\loan-application\LOG</Property>
+        <Property name="LOG_ROOT_PATH">/Users/sandeep/IdeaProjects/loan-application/logs</Property>
+<!--        <Property name="LOG_ROOT_PATH">C:\Users\sandeepmaurya\dev\projects\loan-application\LOG</Property>-->
         <Property name="LOG_PATTERN">%d{dd-MM-yyyy HH:mm:ss} %-5p [%-5t] %c{3.} - %m%n</Property>
     </Properties>
     <Appenders>
@@ -9,13 +10,13 @@
             <PatternLayout pattern="${LOG_PATTERN}"/>
         </Console>
         <RollingFile name="RollingFile"
-                     fileName="${LOG_ROOT_PATH}\app-debug.log"
-                     filePattern="${LOG_ROOT_PATH}\app-info-%d{yyyyMMdd}-%i.log.gz">
+                     fileName="${LOG_ROOT_PATH}/app-debug.log"
+                     filePattern="${LOG_ROOT_PATH}/app-info-%d{yyyyMMdd}-%i.log.gz">
             <PatternLayout pattern="${LOG_PATTERN}"/>
             <Policies>
                 <SizeBasedTriggeringPolicy size="50KB"/>
             </Policies>
-            <DefaultRolloverStrategy max="10">
+            <DefaultRolloverStrategy max="5">
                 <Delete basePath="${LOG_ROOT_PATH}" maxDepth="1">
                     <IfFileName glob="*/app-*.log.gz" />
                     <IfLastModified age="PT1M" />
