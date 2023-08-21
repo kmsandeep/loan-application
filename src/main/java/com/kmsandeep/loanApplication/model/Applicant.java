@@ -13,14 +13,14 @@ import java.util.Set;
 @Table(name = "APPLICANT")
 public class Applicant {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE,generator = "APPLICANT_SEQ")
-    @SequenceGenerator(name = "APPLICANT_SEQ",initialValue = 1000)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "APPLICANT_SEQ")
+    @SequenceGenerator(name = "APPLICANT_SEQ", initialValue = 1000)
     @Column(name = "id", nullable = false)
     private Long id;
     private String name;
     private int age;
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private Set<Email> emails ;
+    private Set<Email> emails;
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "address_id", referencedColumnName = "id")
     private Address address;
