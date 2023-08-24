@@ -4,6 +4,8 @@ import com.kmsandeep.loanApplication.security.userservice.LoanUserDetailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationProvider;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -33,37 +35,39 @@ public class SecurityConfig {
 
 
     @Bean
-    UserDetailsService userDetailsService(PasswordEncoder passwordEncoder) {
-//        JdbcUserDetailsManager manager = new JdbcUserDetailsManager();
-//        manager.setDataSource(dataSource);
-//        manager.setUsersByUsernameQuery(DEF_USERS_BY_USERNAME_QUERY);
-//        manager.setAuthoritiesByUsernameQuery(DEF_AUTHORITIES_BY_USERNAME_QUERY);
+    UserDetailsService userDetailsService() {
         return new LoanUserDetailService();
     }
 
 
     @Bean
     SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity, HandlerMappingIntrospector introspector) throws Exception {
-        MvcRequestMatcher h2RequestMatcher = new MvcRequestMatcher(introspector, "/**");
-        h2RequestMatcher.setServletPath("/h2-console");
         httpSecurity
-                .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers(h2RequestMatcher).permitAll()
-                        .requestMatchers("*/addUsers").permitAll()
-                        .requestMatchers("*/welcome", "/h2-console/*").permitAll()
-                        .requestMatchers("*/loan/*").hasAnyRole("USER","ADMIN")
-                        .requestMatchers("*/user/*").hasRole("ADMIN")
+                        .requestMatchers("/user/addUser").permitAll()
+                        .requestMatchers("/user/addRole").permitAll()
+                        .requestMatchers("/loan/findAll").hasRole("VIEW")
+                        .requestMatchers("/loan/*").hasRole("USER")
+                        .requestMatchers("/user/listUser").hasRole("ADMIN")
                         .anyRequest().authenticated()
-                ).httpBasic(Customizer.withDefaults())
+                )
+                .csrf(csrf -> csrf.disable())
+                .httpBasic(Customizer.withDefaults())
                 .formLogin(Customizer.withDefaults());
         return httpSecurity.build();
     }
 
-
     @Bean
     PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
+    }
+
+    @Bean
+    public AuthenticationProvider authenticationProvider(){
+        DaoAuthenticationProvider authenticationProvider=new DaoAuthenticationProvider();
+        authenticationProvider.setUserDetailsService(userDetailsService());
+        authenticationProvider.setPasswordEncoder(passwordEncoder());
+        return authenticationProvider;
     }
 }
 

@@ -44,7 +44,7 @@ public class LoanController {
                 .body(LoanResponse.one(application));
     }
 
-    @GetMapping("/{applicationId}")
+    @GetMapping("/find/{applicationId}")
     public ResponseEntity<LoanResponse> getLoan(@PathVariable String applicationId) {
         Optional<Loan> optionalApplication = loanService.findLoan(applicationId);
         if (optionalApplication.isPresent()) {
@@ -64,7 +64,7 @@ public class LoanController {
                 .body(LoanResponse.multi(allLoans));
     }
 
-    @PatchMapping("/{applicationId}/status")
+    @PatchMapping("/status/{applicationId}")
     public ResponseEntity<LoanResponse> updateLoanStatus(@PathVariable String applicationId, @RequestBody LoanStatusUpdate statusUpdate) {
         Optional<Loan> loanOptional = loanService.findLoan(applicationId);
         if (loanOptional.isPresent()) {
@@ -77,11 +77,6 @@ public class LoanController {
         } else {
             throw new LoanNotFoundException(applicationId);
         }
-    }
-
-    @GetMapping("/welcome")
-    public  String welcome(){
-        return "Welcome";
     }
 
 }

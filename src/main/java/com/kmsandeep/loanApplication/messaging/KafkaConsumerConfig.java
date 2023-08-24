@@ -13,7 +13,7 @@ import java.util.HashMap;
 import java.util.Map;
 @Configuration
 public class KafkaConsumerConfig {
-    @Value(value = "${spring.kafka.bootstrap-servers}")
+    @Value("${spring.kafka.bootstrap-servers}")
     private String bootstrapAddress;
     @Bean
     public ConsumerFactory<String,String> consumerFactory(){
