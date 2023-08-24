@@ -22,7 +22,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/loan-api")
+@RequestMapping("/loan")
 public class LoanController {
     private final List<Loan> loans = new ArrayList<>();
     private static final Logger LOGGER = LoggerFactory.getLogger(LoanController.class);
@@ -64,16 +64,6 @@ public class LoanController {
                 .body(LoanResponse.multi(allLoans));
     }
 
-//    @GetMapping
-//    public ResponseEntity<LoanResponse> listApplicantLoans(@RequestParam("applicantName") String name){
-//        List<Loan> allLoans = loanService.findByApplicantName(name);
-//        if(CollectionUtils.isEmpty(allLoans)){
-//            throw new LoanNotFoundException();
-//        }
-//        return ResponseEntity.status(HttpStatus.FOUND)
-//                .body(LoanResponse.multi(allLoans));
-//    }
-
     @PatchMapping("/{applicationId}/status")
     public ResponseEntity<LoanResponse> updateLoanStatus(@PathVariable String applicationId, @RequestBody LoanStatusUpdate statusUpdate) {
         Optional<Loan> loanOptional = loanService.findLoan(applicationId);
@@ -88,4 +78,10 @@ public class LoanController {
             throw new LoanNotFoundException(applicationId);
         }
     }
+
+    @GetMapping("/welcome")
+    public  String welcome(){
+        return "Welcome";
+    }
+
 }

@@ -7,15 +7,10 @@ import java.util.stream.Collectors;
 
 public class ExecutorServiceEx {
     public static void main(String[] args) throws IOException {
-
-
-
-
-
         List<String> tasks = List
                 .of("Read", "Write", "Play", "Dance",
-                        "Cook", "Walk", "Fuck", "Cry", "Run", "Fly", "Spy", "Read", "Write", "Play", "Dance",
-                        "Cook", "Walk", "Fuck", "Cry", "Run", "Fly", "Spy");
+                        "Cook", "Walk", "Cry", "Run", "Fly", "Spy", "Read", "Write", "Play", "Dance",
+                        "Cook", "Walk", "Cry", "Run", "Fly", "Spy");
         System.out.println(tasks.size());
         int n = Runtime.getRuntime().availableProcessors();
         ExecutorService executorService = Executors.newCachedThreadPool();
@@ -29,9 +24,9 @@ public class ExecutorServiceEx {
             throw new RuntimeException(e);
         }
 
-//        tasks.stream()
-//                .map(str -> executorService.submit(callable(str)))
-//                .forEach(ExecutorServiceEx::printFuture);
+        tasks.stream()
+                .map(str -> executorService.submit(callable(str)))
+                .forEach(ExecutorServiceEx::printFuture);
 
 
         executorService.shutdown();
@@ -42,18 +37,14 @@ public class ExecutorServiceEx {
         try {
             System.out.println(" get --> " + future.get());
         } catch (InterruptedException e) {
-//            throw new RuntimeException(e);
         } catch (ExecutionException e) {
-//            throw new RuntimeException(e);
         }
         System.out.println(future.isDone());
         System.out.println();
     }
 
     private static Runnable runnable(String msg) {
-        return () -> {
-            System.out.println(Thread.currentThread().getName() + " Runnable Task: " + msg);
-        };
+        return () -> System.out.println(Thread.currentThread().getName() + " Runnable Task: " + msg);
     }
 
     private static Callable<String> callable(String msg) {
