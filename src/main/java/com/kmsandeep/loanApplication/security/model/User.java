@@ -1,12 +1,10 @@
-package com.kmsandeep.loanApplication.security.userservice;
+package com.kmsandeep.loanApplication.security.model;
 
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.hibernate.validator.constraints.UniqueElements;
 
 import java.util.List;
-import java.util.Set;
 
 @Entity
 @Table(name = "loan_users")

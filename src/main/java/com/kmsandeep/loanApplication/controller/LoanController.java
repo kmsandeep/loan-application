@@ -41,14 +41,14 @@ public class LoanController {
                     LOGGER.info("kafka message sent success: "+ application.getId());
                 });
         return ResponseEntity.status(HttpStatus.CREATED)
-                .body(LoanResponse.one(application));
+                .body(LoanResponse.result(application));
     }
 
     @GetMapping("/find/{applicationId}")
     public ResponseEntity<LoanResponse> getLoan(@PathVariable String applicationId) {
         Optional<Loan> optionalApplication = loanService.findLoan(applicationId);
         if (optionalApplication.isPresent()) {
-            return ResponseEntity.ok(LoanResponse.one(optionalApplication.get()));
+            return ResponseEntity.ok(LoanResponse.result(optionalApplication.get()));
         } else {
             throw new LoanNotFoundException(applicationId);
         }
@@ -61,7 +61,7 @@ public class LoanController {
             throw new LoanNotFoundException();
         }
         return ResponseEntity.status(HttpStatus.FOUND)
-                .body(LoanResponse.multi(allLoans));
+                .body(LoanResponse.result(allLoans));
     }
 
     @PatchMapping("/status/{applicationId}")
@@ -73,7 +73,7 @@ public class LoanController {
             if (LoanStatus.APPROVED.equals(statusUpdate.getLoanStatus())) {
                 application.setLoanApprovedAmount(statusUpdate.getLoanApprovedAmount());
             }
-            return ResponseEntity.status(HttpStatus.OK).body(LoanResponse.one(application));
+            return ResponseEntity.status(HttpStatus.OK).body(LoanResponse.result(application));
         } else {
             throw new LoanNotFoundException(applicationId);
         }

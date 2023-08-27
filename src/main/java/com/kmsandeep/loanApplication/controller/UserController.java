@@ -2,8 +2,8 @@ package com.kmsandeep.loanApplication.controller;
 
 import com.kmsandeep.loanApplication.repository.AuthorityRepository;
 import com.kmsandeep.loanApplication.repository.UserRepository;
-import com.kmsandeep.loanApplication.security.userservice.Authority;
-import com.kmsandeep.loanApplication.security.userservice.User;
+import com.kmsandeep.loanApplication.security.model.Authority;
+import com.kmsandeep.loanApplication.security.model.User;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

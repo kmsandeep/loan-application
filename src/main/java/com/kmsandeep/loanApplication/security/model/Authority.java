@@ -1,4 +1,4 @@
-package com.kmsandeep.loanApplication.security.userservice;
+package com.kmsandeep.loanApplication.security.model;
 
 import jakarta.persistence.*;
 import lombok.Data;

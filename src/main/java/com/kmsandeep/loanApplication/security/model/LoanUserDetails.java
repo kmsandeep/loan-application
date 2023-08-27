@@ -1,4 +1,4 @@
-package com.kmsandeep.loanApplication.security.userservice;
+package com.kmsandeep.loanApplication.security.model;
 
 import lombok.extern.java.Log;
 import org.springframework.security.core.GrantedAuthority;

@@ -1,19 +1,23 @@
 package com.kmsandeep.loanApplication.security;
 
-import com.kmsandeep.loanApplication.security.userservice.LoanUserDetailService;
+import com.kmsandeep.loanApplication.security.filter.JwtAuthFilter;
+import com.kmsandeep.loanApplication.security.service.LoanUserDetailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.Customizer;
+import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.servlet.util.matcher.MvcRequestMatcher;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.servlet.handler.HandlerMappingIntrospector;
 
 import javax.sql.DataSource;
@@ -21,9 +25,9 @@ import javax.sql.DataSource;
 @EnableWebSecurity
 @Configuration
 public class SecurityConfig {
-
     @Autowired
-    DataSource dataSource;
+    JwtAuthFilter jwtAuthFilter;
+
     public static final String DEF_USERS_BY_USERNAME_QUERY = """
             select username,password,enabled from loan_users where username = ?
             """;
@@ -46,11 +50,14 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/user/addUser").permitAll()
                         .requestMatchers("/user/addRole").permitAll()
+                        .requestMatchers("/authenticate").permitAll()
                         .requestMatchers("/loan/findAll").hasRole("VIEW")
                         .requestMatchers("/loan/*").hasRole("USER")
                         .requestMatchers("/user/listUser").hasRole("ADMIN")
                         .anyRequest().authenticated()
                 )
+                .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
+                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .csrf(csrf -> csrf.disable())
                 .httpBasic(Customizer.withDefaults())
                 .formLogin(Customizer.withDefaults());
@@ -63,11 +70,16 @@ public class SecurityConfig {
     }
 
     @Bean
-    public AuthenticationProvider authenticationProvider(){
-        DaoAuthenticationProvider authenticationProvider=new DaoAuthenticationProvider();
+    AuthenticationProvider authenticationProvider() {
+        DaoAuthenticationProvider authenticationProvider = new DaoAuthenticationProvider();
         authenticationProvider.setUserDetailsService(userDetailsService());
         authenticationProvider.setPasswordEncoder(passwordEncoder());
         return authenticationProvider;
+    }
+
+    @Bean
+    AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception {
+        return config.getAuthenticationManager();
     }
 }
 

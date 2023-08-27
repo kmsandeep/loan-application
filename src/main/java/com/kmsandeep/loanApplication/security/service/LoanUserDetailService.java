@@ -1,6 +1,8 @@
-package com.kmsandeep.loanApplication.security.userservice;
+package com.kmsandeep.loanApplication.security.service;
 
 import com.kmsandeep.loanApplication.repository.UserRepository;
+import com.kmsandeep.loanApplication.security.model.LoanUserDetails;
+import com.kmsandeep.loanApplication.security.model.User;
 import lombok.extern.java.Log;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
