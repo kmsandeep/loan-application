@@ -79,4 +79,9 @@ public class LoanController {
         }
     }
 
+    @GetMapping("/welcome")
+    public String welcome(){
+        return "<h3> Welcome to loan application. </h3>";
+    }
+
 }

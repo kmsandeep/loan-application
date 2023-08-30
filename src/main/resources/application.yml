@@ -2,7 +2,15 @@ server:
   port: 8082
   servlet:
     context-path: /loan-api
+
 spring:
+  security:
+    oauth2:
+      client:
+        registration:
+          github:
+            clientId: e61c944804d4ffc7570e
+            clientSecret: 73b70c34bac882329996853eabbee0fa10a98354
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://localhost:3306/loandb
@@ -18,3 +26,4 @@ spring:
   h2:
     console:
       enabled: true
+
