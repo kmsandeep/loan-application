@@ -45,19 +45,19 @@ public class SecurityConfig {
 
 
     @Bean
-    SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity, HandlerMappingIntrospector introspector) throws Exception {
+    SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
         httpSecurity
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/authenticate").permitAll()
-//                        .requestMatchers("/loan/findAll").hasRole("VIEW")
-//                        .requestMatchers("/loan/*").hasRole("USER")
-//                        .requestMatchers("/user/*").hasRole("ADMIN")
+                        .requestMatchers("/loan/findAll").hasRole("VIEW")
+                        .requestMatchers("/loan/*").hasRole("USER")
+                        .requestMatchers("/user/*").hasRole("ADMIN")
                         .anyRequest().authenticated()
                 )
-//                .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
-//                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
+                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .csrf(csrf -> csrf.disable())
-                .oauth2Login(Customizer.withDefaults())
+//                .oauth2Login(Customizer.withDefaults())
                 .httpBasic(Customizer.withDefaults())
                 .formLogin(Customizer.withDefaults());
         return httpSecurity.build();

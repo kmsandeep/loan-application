@@ -27,3 +27,7 @@ spring:
     console:
       enabled: true
 
+  profiles:
+    active:
+      - test
+
